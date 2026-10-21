@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Análisis de Datos | Carrusel de Actividades & Portafolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- PDF.js para renderizado nativo de páginas en canvas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+
+  <!-- Barra de navegación superior -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <span class="brand-badge">PORTAFOLIO TÉCNICO</span>
+        <span class="brand-author">Ing. Miguel Ángel Peña</span>
+      </div>
+      <div class="nav-links">
+        <a href="https://drive.google.com/drive/u/1/folders/1ElJipHg3R0UzSswQyOKtylR0L4M0TQN0" target="_blank" rel="noopener noreferrer" class="nav-btn nav-btn-drive">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+          Google Drive Oficial
+        </a>
+        <a href="https://github.com/King1Angel/carrusel-analisis-de-datos" target="_blank" rel="noopener noreferrer" class="nav-btn nav-btn-github">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          Repositorio
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Encabezado Principal (Hero) -->
+  <header class="hero">
+    <div class="hero-glow"></div>
+    <div class="container hero-content">
+      <div class="hero-pill">
+        <span class="pill-dot"></span>
+        Extracción de Conocimiento en Bases de Datos (ECBD)
+      </div>
+      <h1 class="main-title">Análisis de Datos</h1>
+      <p class="hero-description">
+        Visualizador interactivo de evidencias técnicas en formato de carrusel sincronizado. 
+        Cada módulo rota aleatoriamente <strong>cada 30 segundos</strong> entre las páginas del documento 
+        académico-profesional original, evidenciando dominio en Python, Machine Learning, SQL y Ciencia de Datos.
+      </p>
+
+      <!-- Barra de Estado Global de Rotación -->
+      <div class="global-timer-card">
+        <div class="timer-info">
+          <div class="timer-icon-wrap">
+            <svg class="spin-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            <span>Próxima rotación aleatoria en: <strong id="timer-countdown">30s</strong></span>
+          </div>
+          <div class="timer-controls">
+            <button id="toggle-pause-btn" class="control-btn" title="Pausar / Reanudar Rotación">
+              <span id="pause-icon">⏸ Pausar</span>
+            </button>
+            <button id="force-rotate-btn" class="control-btn" title="Rotar ahora">
+              <span>↻ Rotar Ahora</span>
+            </button>
+          </div>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="global-progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Filtros rápidos por área de CV -->
+      <div class="filter-chips">
+        <button class="chip active" data-filter="all">Todas las Actividades (9)</button>
+        <button class="chip" data-filter="ml">Machine Learning & Modelos (4)</button>
+        <button class="chip" data-filter="eda">Python & EDA (2)</button>
+        <button class="chip" data-filter="sql">SQL & ETL (2)</button>
+        <button class="chip" data-filter="methodology">Metodología & Arquitectura (1)</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal de Actividades con Separación -->
+  <main class="container" id="documents-root">
+    <!-- Renderizado dinámicamente por app.js -->
+  </main>
+
+  <!-- Modal para Visualización Detallada / Zoom -->
+  <div id="zoom-modal" class="modal" aria-hidden="true">
+    <div class="modal-overlay" onclick="closeModal()"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <span class="modal-badge" id="modal-category">DOCUMENTO</span>
+          <h3 class="modal-title" id="modal-title">Título del Documento</h3>
+          <p class="modal-subtitle" id="modal-page-info">Página 1 de 10</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal()" aria-label="Cerrar modal">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Canvas o contenido ampliado -->
+      </div>
+      <div class="modal-footer">
+        <div class="modal-nav">
+          <button class="btn btn-outline" id="modal-prev-btn">◀ Anterior</button>
+          <span id="modal-page-indicator">Pág 1 / 10</span>
+          <button class="btn btn-outline" id="modal-next-btn">Siguiente ▶</button>
+        </div>
+        <a id="modal-drive-link" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+          Abrir en Google Drive
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pie de página -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-col">
+        <h4>Análisis de Datos & Portafolio</h4>
+        <p>Evidencias académicas y aplicadas de Miguel Ángel Peña Pech en Ciencia de Datos y Minería de Datos (ECBD).</p>
+      </div>
+      <div class="footer-col text-right">
+        <p>Desplegado en <strong>GitHub Pages</strong></p>
+        <p class="footer-small">Documentos protegidos y respaldados en Google Drive.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
