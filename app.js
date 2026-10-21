@@ -252,6 +252,7 @@ let activeFilter = 'all';
 // Modal state
 let currentModalDoc = null;
 let currentModalPage = 1;
+let currentZoomPercent = 125; // Zoom inicial cómodo para lectura legible con scroll
 
 // Obtener página aleatoria sin repetir la actual
 function getRandomPageNumber(totalPages, current = -1) {
@@ -499,7 +500,7 @@ function startSyncLoop() {
   }, 100);
 }
 
-// Apertura y gestión del Modal
+// Apertura y gestión del Modal de Lectura Ampliada
 async function openModal(docId, slotIdx) {
   const doc = documentsData.find(d => d.id === docId);
   if (!doc) return;
@@ -521,6 +522,16 @@ async function openModal(docId, slotIdx) {
   modal.setAttribute("aria-hidden", "false");
 }
 
+function applyModalZoom() {
+  const wrapper = document.getElementById("modal-canvas-wrapper");
+  const label = document.getElementById("zoom-value-label");
+  if (label) label.innerText = `${currentZoomPercent}%`;
+  if (wrapper) {
+    const calculatedWidth = Math.round(850 * (currentZoomPercent / 100));
+    wrapper.style.maxWidth = `${calculatedWidth}px`;
+  }
+}
+
 async function updateModalView() {
   if (!currentModalDoc) return;
 
@@ -528,7 +539,10 @@ async function updateModalView() {
   const pageIndicator = document.getElementById("modal-page-indicator");
   const modalBody = document.getElementById("modal-body");
 
-  pageInfo.innerText = `Página ${currentModalPage} de ${currentModalDoc.totalPages} • Documento: ${currentModalDoc.fileName}`;
+  // Regresar el scroll arriba para empezar a leer desde el inicio de la hoja
+  if (modalBody) modalBody.scrollTop = 0;
+
+  pageInfo.innerText = `Página ${currentModalPage} de ${currentModalDoc.totalPages} • Archivo: ${currentModalDoc.fileName}`;
   pageIndicator.innerText = `Pág. ${currentModalPage} / ${currentModalDoc.totalPages}`;
 
   modalBody.innerHTML = `<div class="loading-spinner"></div>`;
@@ -536,27 +550,34 @@ async function updateModalView() {
   const pdfDoc = await loadPdfDocument(currentModalDoc.fileName);
   if (pdfDoc) {
     const canvas = document.createElement('canvas');
-    const success = await renderPageToCanvas(pdfDoc, currentModalPage, canvas, 850);
+    // Resolución HD (1450px) para máxima nitidez de texto, código y fórmulas
+    const success = await renderPageToCanvas(pdfDoc, currentModalPage, canvas, 1450);
     if (success) {
       modalBody.innerHTML = '';
-      modalBody.appendChild(canvas);
+      const wrapper = document.createElement('div');
+      wrapper.className = 'modal-canvas-wrapper';
+      wrapper.id = 'modal-canvas-wrapper';
+      wrapper.appendChild(canvas);
+      modalBody.appendChild(wrapper);
+      applyModalZoom();
       return;
     }
   }
 
-  // Fallback Modal
+  // Fallback Modal enriquecido si el archivo no está en local
   const summary = (currentModalDoc.pageSummaries && currentModalDoc.pageSummaries[currentModalPage]) || {
     title: `Página #${currentModalPage}`,
     text: `Página ${currentModalPage} de ${currentModalDoc.totalPages}.`
   };
 
   modalBody.innerHTML = `
-    <div style="background: #0f172a; padding: 2.5rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 600px;">
-      <span class="badge" style="margin-bottom: 0.75rem;">ACTIVIDAD ORIGINAL</span>
-      <h3 style="font-size: 1.4rem; color: #fff; margin-bottom: 0.75rem;">${summary.title}</h3>
-      <p style="color: #94a3b8; font-size: 1rem; line-height: 1.6; margin-bottom: 1.5rem;">${summary.text}</p>
-      <div style="font-family: var(--font-mono); font-size: 0.8rem; color: #38bdf8;">
-        Archivo: ${currentModalDoc.fileName}
+    <div style="background: #0f172a; padding: 3rem 2.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.12); width: 100%; max-width: 750px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+      <span class="badge" style="margin-bottom: 0.75rem;">ACTIVIDAD ORIGINAL ECBD</span>
+      <h3 style="font-size: 1.5rem; color: #fff; margin-bottom: 0.75rem;">${summary.title}</h3>
+      <p style="color: #cbd5e1; font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">${summary.text}</p>
+      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.25rem;">
+        <span style="font-family: var(--font-mono); font-size: 0.85rem; color: #38bdf8;">Archivo: ${currentModalDoc.fileName}</span>
+        <a href="https://drive.google.com/file/d/${currentModalDoc.fileId}/view" target="_blank" class="btn btn-primary" style="font-size: 0.85rem;">Abrir PDF en Drive</a>
       </div>
     </div>
   `;
@@ -586,6 +607,26 @@ function setupEventListeners() {
   document.getElementById("force-rotate-btn")?.addEventListener("click", () => {
     rotationTimerStart = Date.now();
     triggerRandomRotation();
+  });
+
+  // Controles de Zoom en el Modal
+  document.getElementById("zoom-in-btn")?.addEventListener("click", () => {
+    if (currentZoomPercent < 220) {
+      currentZoomPercent += 20;
+      applyModalZoom();
+    }
+  });
+
+  document.getElementById("zoom-out-btn")?.addEventListener("click", () => {
+    if (currentZoomPercent > 70) {
+      currentZoomPercent -= 20;
+      applyModalZoom();
+    }
+  });
+
+  document.getElementById("zoom-fit-btn")?.addEventListener("click", () => {
+    currentZoomPercent = 135;
+    applyModalZoom();
   });
 
   // Navegación dentro del modal
