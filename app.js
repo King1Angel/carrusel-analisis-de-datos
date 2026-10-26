@@ -13,6 +13,200 @@ const DRIVE_MAIN_FOLDER = "https://drive.google.com/drive/u/1/folders/1ElJipHg3R
 // Base de datos de actividades extraídas de los documentos originales
 const documentsData = [
   {
+  "id": "ref-workflow-steps",
+  "type": "image",
+  "category": "reference",
+  "tag": "METODOLOGÍA • CICLO DE VIDA DEL DATO",
+  "title": "Paso a Paso para el Análisis de Datos: Metodología en 6 Fases",
+  "subtitle": "De la Definición del Problema a la Toma de Decisiones Estratégicas y Medición de Impacto",
+  "description": "Estructura metódica estándar para transformar datos brutos en decisiones de negocio medibles. Divide el proyecto en 6 fases secuenciales con retroalimentación continua: objetivos, recolección, limpieza, análisis con preguntas clave, decisiones y medición de resultados.",
+  "imageSrc": "assets/images/data_analysis_workflow_steps.png",
+  "totalPages": 3,
+  "tools": [
+    "Metodología Analítica",
+    "CRISP-DM",
+    "KPIs de Negocio",
+    "Preguntas Clave",
+    "Toma de Decisiones"
+  ],
+  "keyPoints": [
+    "Paso 1 - Definir Objetivos: Sin un objetivo de negocio claro, el análisis carece de dirección (establecer KPIs SMART).",
+    "Paso 2 - Recopilación de Datos: Extracción multi-fuente (APIs, SQL, CSVs) garantizando trazabilidad y ética de datos.",
+    "Paso 3 - Organizar y Limpiar: El 80% del esfuerzo. Manejo de nulos, corrección de tipos erróneos y descarte de ruido.",
+    "Paso 4 - Analizar con Preguntas Clave: Segmentar, formular hipótesis falsables y descubrir patrones ocultos.",
+    "Paso 5 - Decisiones Basadas en Datos: Traducir conclusiones estadísticas en acciones ejecutivas concretas.",
+    "Paso 6 - Medir y Ajustar: Comparar resultados reales vs esperados y calibrar el pipeline iterativamente."
+  ],
+  "checklist": [
+    "¿Está explícitamente definida la decisión de negocio que depende de este análisis?",
+    "¿Se verificó que los datos no tengan sesgo de selección o captura temporal incompleta?",
+    "¿Se redactó un diccionario de variables para homologar términos entre áreas técnicas y de negocio?",
+    "¿Se documentaron todas las transformaciones aplicadas durante la fase de limpieza?"
+  ],
+  "codeBlock": "# Workflow del Analista en Python\n1. Planteamiento: ¿Qué cohorte de clientes tiene menor retención?\n2. Extracción: df = pd.read_sql(\"SELECT * FROM fact_ventas\", db_conn)\n3. Limpieza: df.drop_duplicates(subset=['cliente_id'], inplace=True)\n4. Exploración: df.groupby('segmento')['ltv'].describe()\n5. Decisión: Reasignar presupuesto hacia canales de mayor LTV\n6. Medición: Monitorear CAC y Churn Rate a 30, 60 y 90 días",
+  "pageSummaries": {
+    "1": {
+      "title": "Infografía: Los 6 Pasos del Análisis",
+      "text": "Diagrama de flujo: 1. Definir Objetivos ➔ 2. Recopilación ➔ 3. Organizar y Limpiar ➔ 4. Analizar con Preguntas Clave ➔ 5. Tomar Decisiones ➔ 6. Medir y Ajustar."
+    },
+    "2": {
+      "title": "Fases 1 a 3: Del Problema a los Datos Limpios",
+      "text": "Establecimiento de preguntas guía, verificación de fuentes y saneamiento de inconsistencias. La base indispensable antes de calcular métricas."
+    },
+    "3": {
+      "title": "Fases 4 a 6: De los Insights al Impacto Empresarial",
+      "text": "Contraste de hipótesis, visualización ejecutiva y monitoreo post-implementación para validar el ROI del análisis."
+    }
+  }
+},
+  {
+  "id": "ref-quality-framework",
+  "type": "image",
+  "category": "reference",
+  "tag": "GOBERNANZA & CALIDAD • DATA QUALITY ASSURANCE",
+  "title": "Los 6 Requisitos Críticos que Exige el Análisis de Datos (Data Quality)",
+  "subtitle": "Precisión, Completitud, Coherencia, Actualidad/Puntualidad, Unicidad y Validez",
+  "description": "Marco de aseguramiento de calidad del dato. En analítica y Machine Learning rige el principio 'Garbage In, Garbage Out': un reporte o modelo entrenado con datos incompletos o inconsistentes inducirá a pérdidas financieras y decisiones erróneas.",
+  "imageSrc": "assets/images/data_quality_framework.jpg",
+  "totalPages": 3,
+  "tools": [
+    "Data Quality (DQ)",
+    "Data Governance",
+    "Auditoría de Datos",
+    "Validación Estadística",
+    "Integridad Referencial"
+  ],
+  "keyPoints": [
+    "1. Precisión (Accuracy): Los datos reflejan con fidelidad matemática la realidad (sin errores de redondeo o tipográficos).",
+    "2. Completitud (Completeness): No existen huecos críticos en atributos clave; el porcentaje de nulos está documentado y controlado.",
+    "3. Coherencia (Consistency): La información coincide en todos los sistemas (ej. el total de inventario en almacén = registros en base de datos).",
+    "4. Actualidad o Puntualidad (Timeliness): Los datos son vigentes y reflejan la ventana temporal pertinente para actuar.",
+    "5. Unicidad (Uniqueness): Cada entidad de negocio (usuario, transacción, factura) está registrada una sola vez sin duplicados.",
+    "6. Validez (Validity): Los registros se ajustan a tipos de datos, formatos esperados y rangos lógicos permitidos."
+  ],
+  "checklist": [
+    "Auditar nulos: df.isnull().mean() < 0.05 en columnas predictivas.",
+    "Comprobar unicidad: len(df) == df['id'].nunique().",
+    "Validar coherencia temporal: Fecha_Fin >= Fecha_Inicio.",
+    "Verificar tipos y rangos: df.describe() para detectar mínimos negativos o máximos anómalos."
+  ],
+  "codeBlock": "# Reglas de Validación de Calidad de Datos (Data Quality Checks)\nassert df['precio'].min() >= 0, \"Error: Existen precios negativos\"\nassert df['email'].str.match(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$').all(), \"Emails invalidos\"\nassert df['fecha_transaccion'].max() <= pd.Timestamp.now(), \"Fechas futuras detectadas\"\nprint(\"OK: 6 pilares de calidad verificados\")",
+  "pageSummaries": {
+    "1": {
+      "title": "Infografía: Pilares de Calidad del Dato",
+      "text": "Las 6 dimensiones universales de la gobernanza: Precisión, Completitud, Coherencia, Actualidad, Unicidad y Validez."
+    },
+    "2": {
+      "title": "Criterios de Auditoría e Imputación",
+      "text": "Reglas de descarte de registros corruptos, umbrales de imputación y normalización de esquemas relacionales."
+    },
+    "3": {
+      "title": "Impacto en Modelos Predictivos y BI",
+      "text": "Cómo la consistencia previene el data leakage y garantiza que los dashboards gerenciales sean 100% confiables."
+    }
+  }
+},
+  {
+  "id": "ref-pandas-guide",
+  "type": "image",
+  "category": "reference",
+  "tag": "GUÍA TÉCNICA • CHEATSHEET OFICIAL DE PANDAS",
+  "title": "Pandas para Análisis de Datos: Guía Completa de Comandos & Pipeline",
+  "subtitle": "Los 10 Bloques Cardinales: Ingesta, Profiling, Selección, Limpieza, Transformación, Merge y Fechas",
+  "description": "Compendio de referencia rápida con los 10 bloques de sintaxis más utilizados en ciencia de datos con Pandas. Enfocado en código limpio, vectorización y eliminación de bucles ineficientes.",
+  "imageSrc": "assets/images/pandas_cheat_sheet_guide.jpg",
+  "totalPages": 3,
+  "tools": [
+    "Pandas",
+    "Python",
+    "NumPy",
+    "Data Wrangling",
+    "Vectorización",
+    "DataFrames"
+  ],
+  "keyPoints": [
+    "1. Creación: pd.read_csv(), read_excel(), read_sql() y DataFrames desde diccionarios.",
+    "2. Exploración: df.head(), df.shape, df.info(), df.describe() y df.dtypes.",
+    "3. Selección y Filtrado: Indexación explícita con .loc[] (etiquetas) e .iloc[] (enteros).",
+    "4. Limpieza: isnull().sum(), dropna(), fillna(valor), drop_duplicates() y astype().",
+    "5. Transformación: Vectorización directa, .apply(lambda), .assign() y .sort_values().",
+    "6. Agrupación: df.groupby('col').agg({'a':'sum', 'b':'mean'}) y pivot_table().",
+    "7. Combinación: pd.merge(df1, df2, on='key', how='left') y pd.concat().",
+    "8. Cadenas: Métodos .str.lower(), .str.strip(), .str.contains() y expresiones regulares.",
+    "9. Fechas: pd.to_datetime(), extracción .dt.month, .dt.day_name() y resample('M').",
+    "10. Exportación: to_csv(index=False), to_excel(), y gráficos directos con .plot()."
+  ],
+  "checklist": [
+    "Usar inplace=False o reasignar df = df.copy() para prevenir SettingWithCopyWarning.",
+    "Convertir columnas de baja cardinalidad a tipo 'category' para ahorrar hasta 80% de memoria.",
+    "Reemplazar bucles for por operaciones vectorizadas en NumPy / Pandas.",
+    "Ejecutar reset_index() tras agregaciones de groupby para mantener columnas planas."
+  ],
+  "codeBlock": "# Pipeline Tipico de Limpieza y Agrupacion en Pandas\ndf = pd.read_csv(\"ventas_2026.csv\")\ndf['fecha'] = pd.to_datetime(df['fecha'])\ndf['ventas_netas'] = df['precio'] * df['cantidad']\nkpi_resumen = (df.query(\"estado == 'COMPLETADA'\")\n                 .groupby([df['fecha'].dt.to_period('M'), 'categoria'])\n                 .agg(total_ventas=('ventas_netas', 'sum'),\n                      clientes_unicos=('cliente_id', 'nunique'))\n                 .reset_index())",
+  "pageSummaries": {
+    "1": {
+      "title": "Cheatsheet Visual de Pandas (10 Bloques)",
+      "text": "Infografía completa con la sintaxis de DataFrames, exploración, limpieza, transformación, agrupaciones y series temporales."
+    },
+    "2": {
+      "title": "Reglas de Oro: Vectorización y Memoria",
+      "text": "Optimización de tipos de datos con astype(), prevención de copias accidentales y vectorización con .str y .dt."
+    },
+    "3": {
+      "title": "Combinación y Exportación Segura",
+      "text": "Buenas prácticas para merges relacionales (inner, left, outer), pivot tables y guardado en CSV/Parquet."
+    }
+  }
+},
+  {
+  "id": "ref-analytics-concept",
+  "type": "image",
+  "category": "reference",
+  "tag": "BUSINESS INTELLIGENCE • DATA VISUALIZATION",
+  "title": "Visualización Analítica & Data Storytelling Ejecutivo",
+  "subtitle": "Cómo Estructurar Dashboards, Gráficos de Tendencias y Métricas Clave de Decisión",
+  "description": "Guía de buenas prácticas para la selección de gráficos e interfaces analíticas. El valor de los datos radica en su interpretabilidad: conectar métricas operativas con paneles visuales limpios, legibles y orientados a la acción ejecutiva.",
+  "imageSrc": "assets/images/data_analytics_concept.jpg",
+  "totalPages": 3,
+  "tools": [
+    "Data Storytelling",
+    "Dashboards",
+    "Business Intelligence",
+    "Matplotlib",
+    "Seaborn",
+    "Data-Ink Ratio"
+  ],
+  "keyPoints": [
+    "Regla de los 5 Segundos: El lector debe comprender el mensaje principal del gráfico en menos de 5 segundos.",
+    "Elección de Visualización: Barras para ranking, líneas para tiempo, scatter para correlación y boxplot para variabilidad.",
+    "Data-Ink Ratio (Edward Tufte): Eliminar fondos saturados, rejillas pesadas y efectos 3D que añaden ruido cognitivo.",
+    "Contextualización de Métricas: Todo número debe compararse contra un objetivo, periodo anterior o benchmark.",
+    "Uso Semántico del Color: Utilizar paletas accesibles (WCAG AA), reservando colores brillantes solo para anomalías o alertas."
+  ],
+  "checklist": [
+    "¿El título del gráfico describe la conclusión principal en lugar de solo listar variables?",
+    "¿Los ejes están etiquetados con unidades claras ($, %, días, usuarios)?",
+    "¿Se ordenaron las barras por magnitud para facilitar la lectura comparativa?",
+    "¿Se evitó el uso de gráficos de pastel (pie charts) con más de 3 segmentos?"
+  ],
+  "codeBlock": "# Buenas Practicas de Visualizacion con Seaborn y Matplotlib\nimport matplotlib.pyplot as plt\nimport seaborn as sns\n\nplt.figure(figsize=(10, 5))\nsns.barplot(data=df_top, x='ingresos', y='producto', palette='mako')\nplt.title(\"Top 5 Productos por Generacion de Ingresos (Q3 2026)\", fontsize=14, weight='bold')\nplt.xlabel(\"Ingresos Totales (MXN)\", fontsize=11)\nplt.ylabel(\"\")\nplt.grid(axis='x', linestyle='--', alpha=0.3)\nplt.tight_layout()",
+  "pageSummaries": {
+    "1": {
+      "title": "Ilustración Conceptual: El Analista y sus Paneles",
+      "text": "Representación del analista monitoreando tendencias en líneas, barras categóricas e indicadores ejecutivos."
+    },
+    "2": {
+      "title": "Guía de Selección de Gráficos",
+      "text": "Criterios para elegir entre gráficos de barras, dispersión, líneas temporales y mapas de calor sin saturar la vista."
+    },
+    "3": {
+      "title": "Data Storytelling y Entrega de Valor",
+      "text": "Estructuración de reportes ejecutivos: Contexto ➔ Conflicto/Hallazgo ➔ Solución y llamada a la acción basada en datos."
+    }
+  }
+},
+
+  {
     id: "ecbd-pg5",
     category: "ml",
     tag: "PRÁCTICA GUIADA 5 • MACHINE LEARNING",
@@ -515,7 +709,13 @@ async function openModal(docId, slotIdx) {
 
   modalTitle.innerText = doc.title;
   modalCategory.innerText = doc.tag;
-  modalDriveLink.href = `https://drive.google.com/file/d/${doc.fileId}/view`;
+  if (doc.type === 'image') {
+    modalDriveLink.href = doc.imageSrc;
+    modalDriveLink.innerText = "Ver Imagen Original";
+  } else {
+    modalDriveLink.href = `https://drive.google.com/file/d/${doc.fileId}/view`;
+    modalDriveLink.innerText = "Abrir PDF en Drive";
+  }
 
   await updateModalView();
   modal.classList.add("active");
