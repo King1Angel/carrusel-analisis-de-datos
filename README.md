@@ -55,6 +55,6 @@ Todos los archivos originales, datasets y evidencias académicas se encuentran a
 ## 👤 Autor
 
 **Ing. Miguel Ángel Peña Pech**
-- 💼 Perfil: Ingeniero en Desarrollo y Gestión de Software / Especialista en Análisis de Datos
+- 💼 Perfil: Ingeniero en Desarrollo y Gestión de Software / Analista de Datos
 - 🌐 CV Web: [King1Angel/ANGEL-CV2026](https://github.com/King1Angel/ANGEL-CV2026)
 - 🐙 GitHub: [@King1Angel](https://github.com/King1Angel)
