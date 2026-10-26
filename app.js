@@ -502,6 +502,7 @@ function startSyncLoop() {
 
 // Apertura y gestión del Modal de Lectura Ampliada
 async function openModal(docId, slotIdx) {
+  currentModalType = "pdf";
   const doc = documentsData.find(d => d.id === docId);
   if (!doc) return;
 
@@ -589,6 +590,347 @@ function closeModal() {
   modal.setAttribute("aria-hidden", "true");
 }
 
+
+// =========================================================================
+// GUÍA DE REFERENCIA TÉCNICA: 4 INFOGRAFÍAS Y FUNDAMENTOS DE ANÁLISIS
+// =========================================================================
+const guideData = [
+  {
+    id: "guide-lifecycle",
+    badge: "METODOLOGÍA END-TO-END • 6 FASES",
+    tabTitle: "01. Ciclo de Vida (6 Fases)",
+    title: "Paso a Paso para un Análisis de Datos Riguroso",
+    subtitle: "Flujo metodológico sistemático desde la formulación del problema de negocio hasta la medición de impacto y mejora continua.",
+    imageSrc: "assets/images/data_analysis_workflow_steps.png",
+    alt: "Paso a paso para el análisis de datos - Metodología en 6 fases",
+    takeaway: "«Un análisis sin un objetivo de negocio claro produce visualizaciones decorativas sin valor estratégico. La fase 1 define el éxito de todo el pipeline analítico.»",
+    points: [
+      {
+        num: "01",
+        title: "Objetivos del Análisis",
+        desc: "Definir con precisión la pregunta de negocio (criterios SMART). ¿Qué decisión o KPI clave busca optimizarse? Establecer hipótesis previas antes de explorar los datos."
+      },
+      {
+        num: "02",
+        title: "Recopilación de Datos",
+        desc: "Mapeo e ingesta multi-fuente: bases de datos relacionales (SQL), APIs REST, Data Lakes y archivos planos (CSV, JSON, Parquet). Verificación de linaje y accesos."
+      },
+      {
+        num: "03",
+        title: "Organizar y Limpiar los Datos",
+        desc: "El 70-80% del tiempo analítico. Imputación de nulos, desduplicación estricta, casting de tipos de datos y saneamiento de valores atípicos (outliers con IQR/Z-score)."
+      },
+      {
+        num: "04",
+        title: "Preguntas Clave y Análisis (EDA)",
+        desc: "Análisis Exploratorio de Datos, estadística descriptiva, matrices de correlación multivariable, pruebas de significancia y modelado predictivo o de segmentación."
+      },
+      {
+        num: "05",
+        title: "Tomar Decisiones Basadas en Datos",
+        desc: "Traducción de coeficientes matemáticos en recomendaciones operativas y estratégicas claras. Evaluación de escenarios de costo-beneficio y mitigación de riesgos."
+      },
+      {
+        num: "06",
+        title: "Medir y Ajustar Resultados",
+        desc: "Monitoreo continuo del impacto mediante dashboards ejecutivos, seguimiento de KPIs post-despliegue y ajuste adaptativo de las variables del pipeline."
+      }
+    ]
+  },
+  {
+    id: "guide-quality",
+    badge: "DATA GOVERNANCE & AUDITORÍA DE CALIDAD",
+    tabTitle: "02. Calidad de Datos (6 Pilares)",
+    title: "El Análisis de Datos Requiere: 6 Pilares de Integridad",
+    subtitle: "Regla fundamental: «Garbage In, Garbage Out». Ningún modelo de Machine Learning ni reporte ejecutivo es confiable sin superar estos 6 controles.",
+    imageSrc: "assets/images/data_quality_framework.jpg",
+    alt: "Los 6 pilares de calidad del dato requeridos para un análisis profesional",
+    takeaway: "«La calidad del dato no es un paso opcional; es la base sobre la que se sustenta la credibilidad técnica y el ROI de cualquier decisión empresarial.»",
+    points: [
+      {
+        num: "01",
+        title: "Precisión (Accuracy)",
+        desc: "Los datos reflejan fielmente la realidad del fenómeno medido. Ausencia de errores de transcripción, cálculo erróneo o sesgo de instrumentos de medición."
+      },
+      {
+        num: "02",
+        title: "Completitud (Completeness)",
+        desc: "Proporción de atributos registrados vs requeridos. Todos los campos mandatorios están poblados sin pérdidas críticas que distorsionen los agregados."
+      },
+      {
+        num: "03",
+        title: "Coherencia (Consistency)",
+        desc: "La información no se contradice entre tablas, motores o períodos temporales. Llaves foráneas íntegras y reglas lógicas transversales uniformes."
+      },
+      {
+        num: "04",
+        title: "Actualidad (Timeliness)",
+        desc: "Frescura y disponibilidad dentro de la ventana temporal exigida por el negocio. Datos caducos conducen a decisiones desalineadas con el mercado."
+      },
+      {
+        num: "05",
+        title: "Unicidad (Uniqueness)",
+        desc: "Cada cliente, transacción o entidad del mundo real existe exactamente una sola vez en el dataset. Eliminación rigurosa de duplicados redundantes."
+      },
+      {
+        num: "06",
+        title: "Validez (Validity)",
+        desc: "Conformidad con formatos reglamentarios, rangos permitidos (ej. edades > 0), dominios categóricos específicos y sintaxis esperada (emails, RFCs, fechas)."
+      }
+    ]
+  },
+  {
+    id: "guide-pandas",
+    badge: "PYTHON DATA STACK • PANDAS CHEATSHEET",
+    tabTitle: "03. Pandas & Estructuras",
+    title: "Pandas para Análisis de Datos: Guía Completa de Manipulación Tabular",
+    subtitle: "Compendio estructurado en 10 módulos técnicos para transformar, sanear y resumir DataFrames de forma vectorizada y eficiente.",
+    imageSrc: "assets/images/pandas_cheat_sheet_guide.jpg",
+    alt: "Pandas Cheatsheet - Guía completa de manipulación tabular y estructuras de datos en Python",
+    takeaway: "«Optimización de memoria: aprovecha las operaciones vectorizadas de NumPy en C; evita bucles for para acelerar el procesamiento hasta 150 veces.»",
+    points: [
+      {
+        num: "01-02",
+        title: "Creación & Profiling Inicial",
+        desc: "Estructuras Series (1D) y DataFrames (2D). Diagnóstico instantáneo con df.info(memory_usage='deep'), df.describe().T, df.shape y comprobación de dtypes."
+      },
+      {
+        num: "03",
+        title: "Selección & Filtrado Vectorizado",
+        desc: "Acceso explícito por etiqueta (.loc) o por posición entera (.iloc). Filtros condicionales booleanos eficientes sin bucles: df[(df['A'] > 0) & (df['B'] == 'val')]."
+      },
+      {
+        num: "04-05",
+        title: "Limpieza & Transformaciones",
+        desc: "Detección de nulos (.isna().sum()), imputación con .fillna(), desduplicación con .drop_duplicates(), y transformaciones funcionales con .apply() y .map()."
+      },
+      {
+        num: "06",
+        title: "Agrupaciones y Resúmenes (GroupBy)",
+        desc: "Partición Split-Apply-Combine: df.groupby('categoria').agg({'monto': ['mean', 'sum'], 'id': 'count'}). Creación de tablas pivote dinámicas."
+      },
+      {
+        num: "07",
+        title: "Cruce de Tablas (Merges & Joins)",
+        desc: "Fusión relacional tipo SQL con pd.merge(df1, df2, on='key', how='left|inner|outer') y concatenación vertical/horizontal con pd.concat()."
+      },
+      {
+        num: "08-10",
+        title: "Texto, Fechas (.dt) & Exportación",
+        desc: "Normalización vectorial de texto con .str.strip() / .str.lower(), manejo temporal con pd.to_datetime() y .dt.year, y exportación optimizada a CSV y Parquet."
+      }
+    ]
+  },
+  {
+    id: "guide-storytelling",
+    badge: "VISUALIZACIÓN & STORYTELLING EJECUTIVO",
+    tabTitle: "04. Data Storytelling",
+    title: "Data Storytelling & Dashboards: Comunicación de Alto Impacto",
+    subtitle: "Metodología para convertir análisis exploratorios y métricas predictivas en narrativas visuales persuasivas para líderes y comités ejecutivos.",
+    imageSrc: "assets/images/data_analytics_concept.jpg",
+    alt: "Data Storytelling, cuadros de mando y visualización ejecutiva",
+    takeaway: "«Un gráfico exitoso no es el más adornado, sino el que permite al tomador de decisiones comprender el insight y el siguiente paso en menos de 5 segundos.»",
+    points: [
+      {
+        num: "01",
+        title: "Principio del Data-Ink Ratio (Tufte)",
+        desc: "Maximizar la proporción de tinta destinada a la información real. Eliminar bordes pesados, sombras 3D innecesarias y líneas de rejilla redundantes."
+      },
+      {
+        num: "02",
+        title: "Taxonomía de Gráficos según el Objetivo",
+        desc: "Comparativas: Barras horizontales ordenadas. Tendencias temporales: Líneas continuas. Distribución: Histogramas y Boxplots. Correlación: Scatter plots y Heatmaps."
+      },
+      {
+        num: "03",
+        title: "Uso Semántico del Color",
+        desc: "El color debe comunicar significado, no decoración. Utilizar tonos neutros (grises) para el contexto y un único color de acento saturado para el foco del insight."
+      },
+      {
+        num: "04",
+        title: "Estructura Narrativa Ejecutiva",
+        desc: "Flujo periodístico piramidal: 1) Titular con la conclusión principal, 2) Gráfico focal de soporte, 3) Cuantificación de impacto financiero, 4) Recomendación."
+      },
+      {
+        num: "05",
+        title: "Traducción de Métricas a Negocio",
+        desc: "Conectar métricas técnicas (R², MSE, F1-Score, AUC-ROC) con KPIs operacionales reales: Churn reducido en %, ahorro de costos, ROI y retención de clientes."
+      },
+      {
+        num: "06",
+        title: "Diseño de Dashboards Limpios",
+        desc: "Jerarquía visual en 'Z' o 'F'. Ubicar los KPIs macro en la zona superior y los filtros dinámicos en una posición accesible sin saturar el espacio."
+      }
+    ]
+  }
+];
+
+// Estado del carrusel de la Guía
+let activeGuideIndex = 0;
+let guideIsPaused = false;
+let guideTimerStart = Date.now();
+const GUIDE_ROTATION_INTERVAL_MS = 14000; // 14 segundos por diapositiva
+
+// Estado del Modal (soporta tanto PDF como Guía)
+let currentModalType = 'pdf'; // 'pdf' o 'guide'
+let currentGuideIndex = 0;
+
+function initGuideCarousel() {
+  renderGuideTabs();
+  renderGuideSlide(0);
+}
+
+function renderGuideTabs() {
+  const container = document.getElementById("guide-tabs-container");
+  if (!container) return;
+
+  container.innerHTML = guideData.map((guide, idx) => `
+    <button class="guide-tab-btn ${idx === activeGuideIndex ? 'active' : ''}" data-slide="${idx}" onclick="setGuideSlide(${idx})">
+      <span class="tab-num">0${idx + 1}</span>
+      <span class="tab-text">${guide.tabTitle.replace(/^0\d\.\s*/, '')}</span>
+    </button>
+  `).join("");
+}
+
+function renderGuideSlide(index) {
+  const wrapper = document.getElementById("guide-slides-wrapper");
+  const counterEl = document.getElementById("guide-slide-counter");
+  if (!wrapper || !guideData[index]) return;
+
+  activeGuideIndex = index;
+  const guide = guideData[index];
+
+  if (counterEl) {
+    counterEl.innerText = `Guía ${index + 1} de ${guideData.length}: ${guide.title.split(':')[0]}`;
+  }
+
+  // Actualizar tabs activas
+  document.querySelectorAll(".guide-tab-btn").forEach((btn, idx) => {
+    if (idx === index) btn.classList.add("active");
+    else btn.classList.remove("active");
+  });
+
+  wrapper.innerHTML = `
+    <div class="guide-slide-card">
+      <div class="guide-media-col">
+        <div class="guide-image-preview-wrapper" onclick="openGuideModal(${index})" title="Haz clic para ampliar la infografía en Alta Definición">
+          <img src="${guide.imageSrc}" alt="${guide.alt}" class="guide-image-preview" loading="lazy" />
+          <div class="guide-image-overlay">
+            <span class="guide-zoom-pill">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+              Clic para ampliar en HD
+            </span>
+          </div>
+        </div>
+
+        <button class="guide-media-btn" onclick="openGuideModal(${index})">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          Inspeccionar Infografía Completa
+        </button>
+      </div>
+
+      <div class="guide-content-col">
+        <span class="guide-slide-badge">${guide.badge}</span>
+        <h3 class="guide-slide-title">${guide.title}</h3>
+        <p class="guide-slide-subtitle">${guide.subtitle}</p>
+
+        <div class="guide-data-grid">
+          ${guide.points.map(pt => `
+            <div class="guide-data-item">
+              <div class="guide-item-header">
+                <span class="guide-item-num">${pt.num}</span>
+                <span class="guide-item-title">${pt.title}</span>
+              </div>
+              <p class="guide-item-desc">${pt.desc}</p>
+            </div>
+          `).join("")}
+        </div>
+
+        <div class="guide-takeaway-box">
+          ${guide.takeaway}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function setGuideSlide(index) {
+  guideTimerStart = Date.now();
+  renderGuideSlide(index);
+}
+
+function nextGuideSlide() {
+  const nextIdx = (activeGuideIndex + 1) % guideData.length;
+  setGuideSlide(nextIdx);
+}
+
+function prevGuideSlide() {
+  const prevIdx = (activeGuideIndex - 1 + guideData.length) % guideData.length;
+  setGuideSlide(prevIdx);
+}
+
+function startGuideSyncLoop() {
+  setInterval(() => {
+    if (guideIsPaused) return;
+
+    const now = Date.now();
+    const elapsed = now - guideTimerStart;
+    const percentage = Math.min(100, (elapsed / GUIDE_ROTATION_INTERVAL_MS) * 100);
+
+    const progressFillEl = document.getElementById("guide-progress-fill");
+    if (progressFillEl) progressFillEl.style.width = `${percentage}%`;
+
+    if (elapsed >= GUIDE_ROTATION_INTERVAL_MS) {
+      guideTimerStart = now;
+      nextGuideSlide();
+    }
+  }, 100);
+}
+
+// Modal en modo Infografía de Guía
+function openGuideModal(guideIndex) {
+  currentModalType = 'guide';
+  currentGuideIndex = guideIndex;
+
+  const modal = document.getElementById("zoom-modal");
+  updateGuideModalView();
+  modal.classList.add("active");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function updateGuideModalView() {
+  const guide = guideData[currentGuideIndex];
+  if (!guide) return;
+
+  const modalTitle = document.getElementById("modal-title");
+  const modalCategory = document.getElementById("modal-category");
+  const modalPageInfo = document.getElementById("modal-page-info");
+  const modalPageIndicator = document.getElementById("modal-page-indicator");
+  const modalDriveLink = document.getElementById("modal-drive-link");
+  const modalBody = document.getElementById("modal-body");
+
+  if (modalBody) modalBody.scrollTop = 0;
+
+  modalCategory.innerText = guide.badge;
+  modalTitle.innerText = guide.title;
+  modalPageInfo.innerText = `Infografía Técnica #${currentGuideIndex + 1} • Haz zoom o usa la rueda para leer todos los detalles`;
+  modalPageIndicator.innerText = `Guía ${currentGuideIndex + 1} / ${guideData.length}`;
+
+  modalDriveLink.href = guide.imageSrc;
+  modalDriveLink.innerHTML = `
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+    Abrir Imagen Original HD
+  `;
+
+  modalBody.innerHTML = `
+    <div class="modal-canvas-wrapper" id="modal-canvas-wrapper">
+      <img src="${guide.imageSrc}" alt="${guide.alt}" class="modal-guide-image" />
+    </div>
+  `;
+
+  applyModalZoom();
+}
+
 // Configuración de eventos de UI
 function setupEventListeners() {
   // Pausar / Reanudar
@@ -631,15 +973,44 @@ function setupEventListeners() {
 
   // Navegación dentro del modal
   document.getElementById("modal-prev-btn")?.addEventListener("click", () => {
+    if (currentModalType === 'guide') {
+      currentGuideIndex = currentGuideIndex > 0 ? currentGuideIndex - 1 : guideData.length - 1;
+      updateGuideModalView();
+      return;
+    }
     if (!currentModalDoc) return;
     currentModalPage = currentModalPage > 1 ? currentModalPage - 1 : currentModalDoc.totalPages;
     updateModalView();
   });
 
   document.getElementById("modal-next-btn")?.addEventListener("click", () => {
+    if (currentModalType === 'guide') {
+      currentGuideIndex = (currentGuideIndex + 1) % guideData.length;
+      updateGuideModalView();
+      return;
+    }
     if (!currentModalDoc) return;
     currentModalPage = currentModalPage < currentModalDoc.totalPages ? currentModalPage + 1 : 1;
     updateModalView();
+  });
+
+  // Controles de la Guía de Referencia
+  document.getElementById("guide-prev-btn")?.addEventListener("click", () => {
+    prevGuideSlide();
+  });
+
+  document.getElementById("guide-next-btn")?.addEventListener("click", () => {
+    nextGuideSlide();
+  });
+
+  const guideTimerToggle = document.getElementById("guide-timer-toggle");
+  const guidePauseIcon = document.getElementById("guide-pause-icon");
+  guideTimerToggle?.addEventListener("click", () => {
+    guideIsPaused = !guideIsPaused;
+    if (guidePauseIcon) {
+      guidePauseIcon.innerText = guideIsPaused ? "▶ Reanudar" : "⏸ Pausar";
+    }
+    guideTimerToggle.style.borderColor = guideIsPaused ? "var(--accent-amber)" : "var(--border-light)";
   });
 
   // Cerrar modal con teclado Escape
@@ -668,6 +1039,8 @@ function setupEventListeners() {
 // Inicialización de la aplicación
 document.addEventListener("DOMContentLoaded", () => {
   buildInterface();
+  initGuideCarousel();
   setupEventListeners();
   startSyncLoop();
+  startGuideSyncLoop();
 });

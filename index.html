@@ -21,6 +21,14 @@
         <span class="brand-author">Ing. Miguel Ángel Peña</span>
       </div>
       <div class="nav-links">
+        <a href="#guia-referencia" class="nav-btn nav-btn-guide">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          Guía de Análisis (4)
+        </a>
+        <a href="#actividades-ecbd" class="nav-btn nav-btn-cases">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          Evidencias ECBD (9)
+        </a>
         <a href="https://drive.google.com/drive/u/1/folders/1ElJipHg3R0UzSswQyOKtylR0L4M0TQN0" target="_blank" rel="noopener noreferrer" class="nav-btn nav-btn-drive">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
           Google Drive Oficial
@@ -79,6 +87,62 @@
       </div>
     </div>
   </header>
+
+  <!-- =========================================================================
+       APARTADO: ESTRUCTURA DE DATOS Y GUÍA DE REFERENCIA TÉCNICA
+       4 Infografías Metodológicas & Criterios Clave para Análisis de Datos
+       ========================================================================= -->
+  <section id="guia-referencia" class="container guide-section">
+    <div class="guide-header">
+      <div class="guide-header-badge">
+        <span class="badge-icon">📐</span>
+        <span>GUÍA DE ESTRUCTURA & METODOLOGÍA DE DATOS</span>
+      </div>
+      <h2 class="guide-title">Fundamentos y Estructuras Clave para el Análisis de Datos</h2>
+      <p class="guide-description">
+        Compendio metodológico con <strong>4 infografías de referencia</strong> y criterios analíticos indispensables para planificar el flujo de trabajo, auditar la calidad del dato, manipular DataFrames en Python con Pandas y comunicar insights ejecutivos.
+      </p>
+
+      <!-- Tabs interactivas de la Guía -->
+      <div class="guide-tabs" id="guide-tabs-container"></div>
+    </div>
+
+    <!-- Carrusel Interactivo de la Guía de Referencia -->
+    <div class="guide-carousel-card">
+      <div class="guide-carousel-topbar">
+        <div class="guide-carousel-status">
+          <span class="guide-status-dot"></span>
+          <span id="guide-slide-counter">Guía 1 de 4: Paso a Paso Metodológico</span>
+        </div>
+        <div class="guide-carousel-actions">
+          <button id="guide-timer-toggle" class="control-btn" title="Pausar / Reanudar Rotación de Guía">
+            <span id="guide-pause-icon">⏸ Pausar</span>
+          </button>
+          <button id="guide-prev-btn" class="control-btn" title="Guía Anterior">◀ Anterior</button>
+          <button id="guide-next-btn" class="control-btn" title="Guía Siguiente">Siguiente ▶</button>
+        </div>
+      </div>
+
+      <!-- Slide Activo inyectado dinámicamente -->
+      <div class="guide-slides-wrapper" id="guide-slides-wrapper"></div>
+
+      <!-- Barra de Progreso de la Guía -->
+      <div class="guide-progress-bar">
+        <div class="guide-progress-fill" id="guide-progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Divisor hacia las Actividades Prácticas -->
+    <div class="section-divider" id="actividades-ecbd">
+      <div class="divider-line"></div>
+      <div class="divider-badge">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+        <span>PORTAFOLIO DE EVIDENCIAS TÉCNICAS • 9 ACTIVIDADES ACADÉMICAS ECBD</span>
+      </div>
+      <div class="divider-line"></div>
+    </div>
+  </section>
+
 
   <!-- Contenedor Principal de Actividades con Separación -->
   <main class="container" id="documents-root">
